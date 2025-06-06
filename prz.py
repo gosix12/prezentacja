@@ -1287,7 +1287,7 @@ with tab4:
 
         
 with tab5:
-    st.title("Analiza udziałów Neuca w rynku i struktura sprzedaży")
+    st.title("Analiza udziałów rynkowych i struktury sprzedaży Neuca na podstawie wybranych kategorii leków")
 
     if df_udzialy_all.empty:
         st.warning("Brak danych do analizy udziałów rynkowych. Upewnij się, że plik 'udzial_all.parquet' jest poprawny.")
@@ -1331,14 +1331,14 @@ with tab5:
             st.metric(
                 label=f"Udział ilościowy Neuca ({rok_wybrany}) w odniesieniu do 2023",
                 value=f"{pokaz_ilosc:.2f}%",
-                delta=f"{delta_ilosc:+.2f}%"
+                delta=f"{delta_ilosc:+.2f} pp"  # <== zmiana tu
             )
-    
+
         with col2:
             st.metric(
                 label=f"Udział wartościowy Neuca ({rok_wybrany}) w odniesieniu do 2023",
                 value=f"{pokaz_wartosc:.2f}%",
-                delta=f"{delta_wartosc:+.2f} %"
+                delta=f"{delta_wartosc:+.2f} pp"  # <== zmiana tu
             )
         st.subheader("Miesięczne udziały Neuca w rynku")
         st.markdown("---") # separator dla wykresów miesięcznych
@@ -1863,6 +1863,8 @@ with tab7:
             graf.edge("Przykład", "Lek", style='dashed')
             # Wyświetlenie
             st.graphviz_chart(graf)
+            
+            
             
             
             

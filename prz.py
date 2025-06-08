@@ -482,7 +482,8 @@ def create_total_sales_chart(df_pivot: pd.DataFrame, sales_col_name: str) -> go.
 
 
 # Zakładki
-tab00,tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+tytul,tab00,tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+    "QR",
     "🏢 O firmie", 
     "📂 Charakterystyka danych", 
     "📊 Struktura danych",
@@ -493,6 +494,53 @@ tab00,tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "🛠️ Modele i dane",
     "📉 Statystyki najlepszego i najgorszego modelu"
 ])
+with tytul:
+       # Tytuł
+    st.markdown("""
+        <h1 style='text-align: center; font-size: 36px; color: #1f77b4;'>
+            SmartPromocje, czyli jak dane pomagają przewidywać sprzedaż leków
+        </h1>
+        <hr>
+    """, unsafe_allow_html=True)
+    
+    # Dane zespołu
+    nazwa_zespolu = "💊 Lek na Dane"
+    sklad = [
+        "👩‍💼 Kierownik: Małgorzata Broniewicz",
+        "👩‍💼 Analityk: Martyna Rutkowska",
+        "👨‍💼 Analityk: Bartosz Wolski"
+    ]
+    # Układ: 2 kolumny
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown("""
+        <h2 style='font-size: 36px; margin-bottom: 10px;'>🧾 Nazwa zespołu</h2>
+        <p style='font-size: 28px; margin-top: -10px;'>💊 Lek na Dane</p>
+        <h2 style='font-size: 36px; margin-bottom: 10px;'> Opiekun </h2>
+        <p style='font-size: 28px; margin-top: -10px;'>🏢 mgr Ewelina Kałka </p>
+        <h2 style='font-size: 36px; margin-bottom: 10px;'>👥 Skład zespołu</h2>
+        <ul style='font-size: 28px; margin-top: -10px;'>
+            <li>👩‍💼 Kierownik: Małgorzata Broniewicz</li>
+            <li>👩‍💼 Analityk: Martyna Rutkowska</li>
+            <li>👨‍💼 Analityk: Bartosz Wolski</li>
+        </ul>
+
+    """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("<h2 style='font-size: 26px;'>📎 Kod QR</h2>", unsafe_allow_html=True)
+        qr_image = Image.open("QR.png")  # Ścieżka do Twojego pliku
+        st.image(qr_image, caption="Zeskanuj, aby obejrzeć prezentację")
+    
+    # Stopka
+    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown("""
+        <p style='text-align: center; color: gray; font-size: 16px;'>
+            © 2025 Zespół Lek na Dane
+        </p>
+    """, unsafe_allow_html=True)
+
 # --- Funkcje pomocnicze ---
 with tab00:
     logo_path = "neuca_logo.png"
@@ -1105,6 +1153,7 @@ with tab3:
                 st.write("Brak danych do wyświetlenia.")
 
 with tab4:
+    kolory = ['#7EC8E3', '#0074D9', '#F6A5A5']
     prog_pareto = st.selectbox("Wybierz próg koncentracji (Pareto)", [70, 80, 90], index=1)
     st.header("📊 Podsumowanie sprzedaży wg lat")
     analiza_wg = st.radio(
@@ -1147,7 +1196,7 @@ with tab4:
         fig_lata = go.Figure(go.Bar(
             x=wartosci_roczne.index.astype(str),
             y=wartosci_roczne.values,
-            marker_color='indianred'
+            marker_color=kolory
         ))
         fig_lata.update_layout(
             title="Podsumowanie wg lat",
@@ -1237,7 +1286,7 @@ with tab4:
         df_kat_all_plot = pd.concat(df_kat_all_plot)
     
         fig_kat = go.Figure()
-        kolory = ['indianred', 'lightsalmon', 'crimson']
+    
         for i, rok in enumerate([2022, 2023, 2024]):
             df_rok_plot = df_kat_all_plot[df_kat_all_plot['Rok'] == rok]
             fig_kat.add_trace(go.Bar(
@@ -1342,25 +1391,30 @@ with tab5:
             )
         st.subheader("Miesięczne udziały Neuca w rynku")
         st.markdown("---") # separator dla wykresów miesięcznych
-        
+        koly = {
+            2023: '#0074D9',  # przykładowy kolor dla 2023 (niebieski)
+            2024: '#F6A5A5'   # przykładowy kolor dla 2024 (pomarańczowy)
+        }
         df_udzialy_all['Miesiąc'] = df_udzialy_all['Miesiąc'].map(month_names_short)
         # Wykresy miesięczne bazujące bezpośrednio na df_udzialy_all
         fig_ilosc = px.line(
             df_udzialy_all,
             x="Miesiąc",
             y="Udział ilościowy (%)",
-            color="Rok",
+            color='Rok',
             markers=True,
-            title="Udział ilościowy Neuca w rynku po miesiącach"
+            title="Udział ilościowy Neuca w rynku po miesiącach",
+            color_discrete_map=koly
         )
         
         fig_wartosc = px.line(
             df_udzialy_all,
             x="Miesiąc",
             y="Udział wartościowy (%)",
-            color="Rok",
+            color='Rok',
             markers=True,
-            title="Udział wartościowy Neuca w rynku po miesiącach"
+            title="Udział wartościowy Neuca w rynku po miesiącach",
+            color_discrete_map=koly
         )
         
         fig_ilosc.update_yaxes(range=[0, 60])
@@ -1511,6 +1565,7 @@ with tab6:
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
+        - **🎯 zmienna celu: sprzedaż_sztuki**
         - 🏷️ **Rodzaj promocji**
         - 🏢 **Producent sprzedażowy kod**
         - 💸 **Rabat promocyjny %**
@@ -1524,10 +1579,10 @@ with tab6:
 
     with st.expander("📋 Wszystkie zmienne w tabeli danych"):
         st.markdown("""
+        - **sprzedaż_sztuki** – liczba jednostek produktu sprzedanych w ramach promocji  
         - **Producent sprzedażowy kod** – unikalny identyfikator producenta leku w systemie NEUCA  
         - **Indeks** – unikalny kod produktu 
-        - **sprzedaż_sztuki** – liczba jednostek produktu sprzedanych w ramach promocji  
-        - **czas_trwania** – liczba dni trwania promocji  
+        - **czas_trwania** – liczba miesięcy trwania promocji  
         - **Wyłączenie rabatowania** – czy promocja wyłącza standardowe rabaty apteczne  
         - **Zamówienie telefoniczne** – możliwość zamawiania telefonicznego 
         - **Zamówienie modemowe** – możliwość zamawiania przez system/modem  

@@ -529,8 +529,8 @@ with tytul:
     """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("<h2 style='font-size: 26px;'>📎 Kod QR</h2>", unsafe_allow_html=True)
-        qr_image = Image.open("QR.png")  # Ścieżka do Twojego pliku
+        st.markdown("<h2 style='font-size: 32px;'>📎 Kod QR</h2>", unsafe_allow_html=True)
+        qr_image = Image.open("qr2.png")  # Ścieżka do Twojego pliku
         st.image(qr_image, caption="Zeskanuj, aby obejrzeć prezentację")
     
     # Stopka
@@ -1734,7 +1734,7 @@ with tab6:
 
     st.markdown("---")
 
-    shap_image_path = "shap_summary_plot_extra_trees_tuned_-_nested_cv.png"
+    shap_image_path = "shape.jpg"
     feature_image_path = "feature_importance_extra_trees_nested_cv.png"
 
     # Sprawdzanie, czy pliki istnieją, zanim spróbujemy je otworzyć

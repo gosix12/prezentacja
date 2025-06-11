@@ -945,6 +945,17 @@ with tab2: # Odpowiada za "Wykresy czasowe"
         # Ta zmienna zawiera teraz nazwę kolumny w df_aggregated do sumowania
         sales_col_for_category_agg = "sprzedaz_ilosc_total"
 
+    st.subheader("Sprzedaż wg kategorii w podziale na lata")
+
+    # --- Wczytywanie df_aggregated TUTAJ ---
+    df_aggregated_categories_data = load_df_aggregated_categories() # <--- This is the line from your error
+    
+    if not df_aggregated_categories_data.empty: # Use the new variable name here
+        df_kategorie = agreguj_sprzedaz_kategorie(df_aggregated_categories_data, sales_col_for_category_agg)
+        fig_kategorie = rysuj_wykres_kategorie(df_kategorie, sales_col_display_name)
+        st.plotly_chart(fig_kategorie, use_container_width=True)
+    else:
+        st.warning("Brak danych kategoryzacyjnych do wyświetlenia.")
 
     # --- Wykresy czasowe łącznej sprzedaży miesięcznej ---
     st.subheader("Wykresy czasowe łącznej sprzedaży miesięcznej")
@@ -976,18 +987,7 @@ with tab2: # Odpowiada za "Wykresy czasowe"
 
 
     st.markdown("---")
-    st.subheader("Sprzedaż wg kategorii w podziale na lata")
-
-    # --- Wczytywanie df_aggregated TUTAJ ---
-    df_aggregated_categories_data = load_df_aggregated_categories() # <--- This is the line from your error
     
-    if not df_aggregated_categories_data.empty: # Use the new variable name here
-        df_kategorie = agreguj_sprzedaz_kategorie(df_aggregated_categories_data, sales_col_for_category_agg)
-        fig_kategorie = rysuj_wykres_kategorie(df_kategorie, sales_col_display_name)
-        st.plotly_chart(fig_kategorie, use_container_width=True)
-    else:
-        st.warning("Brak danych kategoryzacyjnych do wyświetlenia.")
-
 with tab3:
     st.header("TOP 5 producentów i produktów wg sprzedaży")
     sortowanie_po = st.radio("Sortuj TOP 5 wg", ["Sprzedaży ilościowej", "Sprzedaży wartościowej"])
@@ -1536,27 +1536,27 @@ with tab5:
         st.html(tabela_porownawcza_ilosc.to_html(escape=False, index=False))
         
 with tab6:
-    st.markdown("### 🛠️ Modele i dane")
+    st.markdown("# 🛠️ Modele i dane")
 
     col1, col2 = st.columns(2)
 
     with col1:
         st.markdown("""
-        **Modele:**  
-        - 🌳 Drzewo Decyzyjne  
-        - 🌲 Random Forest  
-        - 🌴 Extra Trees  
+        ## **Modele:**  
+       ### - 🌳 Drzewo Decyzyjne  
+       ### - 🌲 Random Forest  
+       ### - 🌴 Extra Trees  
         """)
 
     with col2:
         st.markdown("""
-        **Dane:**  
-        5 grup produktowych:  
-        - Przylepce  
-        - Odchudzanie  
-        - Przeciwwymiotne  
-        - Alergiczne  
-        - Nałogi  
+        ## **Dane:**  
+        ### 5 grup produktowych:  
+       #### - Przylepce  
+       #### - Odchudzanie  
+       #### - Przeciwwymiotne  
+       #### - Alergiczne  
+       #### - Nałogi  
         """)
 
     st.markdown("---")
@@ -1565,16 +1565,16 @@ with tab6:
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
-        - **🎯 zmienna celu: sprzedaż_sztuki**
-        - 🏷️ **Rodzaj promocji**
-        - 🏢 **Producent sprzedażowy kod**
-        - 💸 **Rabat promocyjny %**
+       #### - 🎯 ** Zmienna celu: sprzedaż_sztuki**
+       #### - 🏷️ ** Rodzaj promocji**
+       #### - 🏢 ** Producent sprzedażowy kod**
+       #### - 💸 ** Rabat promocyjny %**
         """)
     with col2:
         st.markdown("""
-        - 📈 **Neuca_sprzedaz_przed**
-        - 📊 **Sprzedaz_rynkowa_w_trakcie_rok_wczesniej**
-        - 📉 **Neuca_sprzedaz_przed_rok_wczesniej**
+        #### - 📈 **Neuca_sprzedaz_przed**
+        #### - 📊 **Sprzedaz_rynkowa_w_trakcie_rok_wczesniej**
+        #### - 📉 **Neuca_sprzedaz_przed_rok_wczesniej**
         """)
 
     with st.expander("📋 Wszystkie zmienne w tabeli danych"):
@@ -1900,7 +1900,7 @@ with tab7:
             udzial_d19_stale = 29.08
             sprzedaz_leku_69065 = 2373
             udzial_leku_69065 = 6.72
-    
+            st.markdown("### Diagram ważniejszych predyktorów")
             # Tworzenie grafu (zaktualizowane wartości na podstawie obrazka)
             graf = graphviz.Digraph()
             graf.node("Producent", " Producent: D19\n(jedyny uczestniczący w promocji Synoptis)",shape='folder', style='filled', fillcolor='#E0F7FA')
